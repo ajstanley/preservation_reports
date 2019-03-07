@@ -5,3 +5,12 @@ preservation_reports.reports:
     _title: 'Preservation reports'
   requirements:
     _permission: 'access site reports'
+
+
+preservation_reports.summary:
+  path: '/admin/reports/repository_summary'
+  defaults:
+    _controller: '\Drupal\preservation_reports\Controller\ReportsController::summary'
+    _title: 'Summary reports'
+  requirements:
+    _permission: 'access site reports'

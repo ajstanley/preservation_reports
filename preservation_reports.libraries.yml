@@ -2,6 +2,9 @@
 # comes out of beta, we should switch to it.
 preservation_reports:
   version: 1.x
+  css:
+    theme:
+      css/preservation_reports.css: {}
   js:
     js/preservation_reports.js: {}
   dependencies:

@@ -10,6 +10,7 @@ Javascript that renders a Chart.js chart.
   var preservationReportsPieChartCanvas = document.getElementById('preservation-reports-pie-chart');
   var preservationReportsPieChartData = drupalSettings.preservation_reports.piechart_data;
 
+
   // Render the chart using the Chart.js API.
   var preservationReportsPieChart = new Chart(preservationReportsPieChartCanvas, {
     type: 'pie',

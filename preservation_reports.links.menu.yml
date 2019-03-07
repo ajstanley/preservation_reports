@@ -3,3 +3,9 @@ preservation_reports.reports:
   parent: system.admin_reports
   description: 'Get reports relevant to preservation of resources managed by Islandora.'
   route_name: preservation_reports.reports
+
+preservation_reports.summary:
+  title: 'Repository Summary'
+  parent: system.admin_reports
+  description: 'Summary of repository stats.'
+  route_name: preservation_reports.summary

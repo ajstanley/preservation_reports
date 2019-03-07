@@ -1,0 +1,22 @@
+{{ attach_library('css/preservation_reports') }}
+
+<div>
+    {% for type, reports in data %}
+        <h1> {{ reports.title }} </h1>
+        <h2>Total {{ reports.total }}</h2>
+        <table class="responstable">
+            <tr>
+                <th>{{ reports.filter_type }}</th>
+                <th>Count</th>
+            </tr>
+            {% for key, value in reports.filter %}
+                <tr>
+                    <td> {{ key }}</td>
+                    <td> {{ value }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% endfor %}
+
+</div>
+

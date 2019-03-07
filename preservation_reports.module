@@ -8,6 +8,9 @@ function preservation_reports_theme($existing, $type, $theme, $path) {
         'preservation_reports_chart' => [
             'variables' => ['chart' => NULL, 'pieheading' => NULL, 'lineheading' => NULL],
         ],
+        'preservation_summary' => [
+            'variables' => ['heading' => NULL, 'data' => []],
+        ],
     ];
 }
 
@@ -46,13 +49,24 @@ function preservation_reports_page_attachments(array &$attachments) {
             ->condition('field_media_use', $tid)
             ->aggregate('mid', 'COUNT')
             ->execute();
-        foreach($results as $result) {
-            $labels[] = $result['field_mime_type'];
+        foreach ($results as $result) {
+            $labels[] = "{$result['field_mime_type']} - {$result['mid_count']}";
             $counts[] = $result['mid_count'];
 
         }
+        $background_colors = [
+            'rgba(255, 99, 132)',
+            'rgba(54, 162, 235)',
+            'rgba(255, 206, 86)',
+            'rgba(120, 50, 14)',
+            'rgba(200, 95, 43)',
+            'rgba(180, 16, 14)',
+            'rgba(45, 90, 180)',
+
+        ];
+
         $dataset->data = $counts;
-        $dataset->backgroundColor = array('rgba(255, 99, 132)', 'rgba(54, 162, 235)', 'rgba(255, 206, 86)');
+        $dataset->backgroundColor = array_slice($background_colors, 0, count($counts));
         $pie_chart_data = array(
             'labels' => $labels,
             'datasets' => array($dataset),
