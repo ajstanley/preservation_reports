@@ -1,0 +1,2 @@
+preservation_reports:
+  sparql_endpoint: "http://localhost:8080/bigdata/namespace/islandora/sparql"

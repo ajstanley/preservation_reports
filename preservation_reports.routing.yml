@@ -14,3 +14,11 @@ preservation_reports.summary:
     _title: 'Summary reports'
   requirements:
     _permission: 'access site reports'
+
+preservation_reports.admin_form:
+  path: '/admin/config/islandora/preservation_reports'
+  defaults:
+    _form: '\Drupal\preservation_reports\Form\AdminForm'
+    _title: 'AdminForm'
+  requirements:
+    _access: 'TRUE'

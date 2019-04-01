@@ -1,0 +1,4 @@
+services:
+  preservation_reports.sparqlqueryrunner:
+    class: Drupal\preservation_reports\Services\SparqlService
+    arguments: ['@http_client', '@config.factory']

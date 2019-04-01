@@ -3,17 +3,21 @@
 namespace Drupal\preservation_reports\Controller;
 
 use Drupal\Core\Controller\ControllerBase;
+use Drupal\Core\DependencyInjection\ContainerInjectionInterface;
 use Drupal\taxonomy\Entity\Term;
 
 /**
  * Controller.
  */
-class ReportsController extends ControllerBase {
+class ReportsController extends ControllerBase implements ContainerInjectionInterface {
+
     /**
      * Basic reports.
      *
-     * @return string
+     * @return array
      */
+
+
     public function reports() {
         return [
             '#theme' => 'preservation_reports_chart',
@@ -24,9 +28,11 @@ class ReportsController extends ControllerBase {
     }
 
     public function summary() {
+
         $data['media'] = $this->getMediaMimeSummary();
         $data['media2'] = $this->getMediaUseSummary();
         $data['islandora_object'] = $this->getIslandoraSummary();
+        $totals = $this->getTriplestoreTotals();
 
 
         return [
@@ -90,6 +96,7 @@ class ReportsController extends ControllerBase {
         $data['filter_type'] = $this->t("Mime Type");
         return $data;
     }
+
     private function getMediaUseSummary() {
         $query = \Drupal::entityQueryAggregate('media');
         $results = $query
@@ -100,9 +107,11 @@ class ReportsController extends ControllerBase {
         $item_count = 0;
         foreach ($results as $result) {
             $term = Term::load($result['field_media_use_target_id']);
-            $name = $term->getName();
-            $data['filter'][$name] = $result['mid_count'];
-            $item_count += $result['mid_count'];
+            if ($term) {
+                $name = $term->getName();
+                $data['filter'][$name] = $result['mid_count'];
+                $item_count += $result['mid_count'];
+            }
 
         }
         $data['title'] = $this->t('Media Objects in Drupal database by Media Use');
@@ -110,4 +119,27 @@ class ReportsController extends ControllerBase {
         $data['filter_type'] = $this->t("Media");
         return $data;
     }
+
+    private function getTriplestoreTotals() {
+        $all_count = 'SELECT (COUNT(?s) AS ?triples) WHERE { ?s ?p ?o }';
+        $object_count = 'SELECT (COUNT(?s) AS ?triples) WHERE {?s rdf:type <http://pcdm.org/models#Object>}';
+        $mimetypes_by_count = "SELECT ?o(COUNT(?s) AS ?triples) WHERE {?s <http://www.ebu.ch/metadata/ontologies/ebucore/ebucore#hasMimeType> ?o }group by ?o";
+        $sparql = \Drupal::getContainer()->get('preservation_reports.sparqlqueryrunner');
+        // Get count of all triples
+        $results = $sparql->getQueryResults($all_count);
+        $totals['triples'] = $results[0]->triples->value;
+        // Get count of all Islandora objects
+        $results = $sparql->getQueryResults($object_count);
+        $totals['objects'] = $results[0]->triples->value;
+        // Get all represented mimetypes
+        $mimes = $sparql->getQueryResults($mimetypes_by_count);
+        foreach ($mimes as $mime) {
+            $mime_totals[$mime->o->value] = $mime->triples->value;
+        }
+        $totals['mimes'] = $mime_totals;
+
+        return $totals;
+
+    }
+
 }
