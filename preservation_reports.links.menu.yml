@@ -9,3 +9,9 @@ preservation_reports.summary:
   parent: system.admin_reports
   description: 'Summary of repository stats.'
   route_name: preservation_reports.summary
+
+preservation_reports.admin_form:
+  title: 'Preservation Reports'
+  parent: system.admin_config_islandora
+  description: 'Configure Preservation Reports.'
+  route_name: preservation_reports.admin_form

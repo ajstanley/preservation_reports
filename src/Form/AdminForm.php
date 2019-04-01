@@ -29,13 +29,14 @@ class AdminForm extends ConfigFormBase {
      */
     public function buildForm(array $form, FormStateInterface $form_state) {
         $config = $this->config('preservation_reports.settings');
+        $default_endpoint = $config->get('sparql_endpoint') ? $config->get('sparql_endpoint') : 'http://localhost:8080/bigdata/namespace/islandora/sparql';
         $form['sparql_endpoint'] = [
             '#type' => 'textfield',
             '#title' => $this->t('SPARQL endpoint'),
             '#description' => $this->t('URL to which queries will be sent'),
             '#maxlength' => 64,
             '#size' => 64,
-            '#default_value' => $config->get('sparql_endpoint'),
+            '#default_value' => $default_endpoint,
             '#weight' => '0',
         ];
         $form['submit'] = [
