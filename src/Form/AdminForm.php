@@ -35,7 +35,7 @@ class AdminForm extends ConfigFormBase {
       '#title' => $this->t('SPARQL endpoint'),
       '#description' => $this->t('URL to which queries will be sent.  
             Address will normally take the form of [PROTOCOL]://[server]:[PORT]/bigdata/namespace/[your namespace (usually Islandora)]/sparql'),
-      '#maxlength' => 64,
+      '#maxlength' => 120,
       '#size' => 120,
       '#default_value' => $default_endpoint,
       '#weight' => '0',
